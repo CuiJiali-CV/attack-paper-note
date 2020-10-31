@@ -92,7 +92,7 @@
 - ```python
   Train Algorithm:
       For n epochs:
-  		mean,std = Encoder(x,y)
+  		  mean,std = Encoder(x,y)
           Loss += KL(mean, std)
           
           z = reparameter(mean, std)
