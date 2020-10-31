@@ -22,6 +22,7 @@
 
 
 
+
 # Attack Paper
 
 
@@ -129,11 +130,104 @@
 
   
 
+## **DEFENSE-GAN**
+
+  [Paper Here](https://arxiv.org/pdf/1805.06605.pdf)  
+
+****
+
+- <div align="center">
+      <img src="https://github.com/CuiJiali-CV/attack-paper-note/raw/main/defense-gan/train.png" height="200" width="800" >
+  </div>
+
+- <div align="center">
+      <img src="https://github.com/CuiJiali-CV/attack-paper-note/raw/main/defense-gan/test.png" height="200" width="800" >
+  </div>
+
   
 
+  ### Questions
+
+  - Using generator to defense is quite interesting. When it "projects" adversarial example onto the range of generator, it iteratively update z based on the mse loss. 
+
+  - **Such idea works, Is it because GAN is trained adversarially ?**
+
+    - **Given this idea, then VAE should also work by following steps :** 
+
+      - **First, we have a well-trained VAE.** 
+      - **we input a noise (same shape as image), and we use x_adv to do the reconstruction loss.**
+      - **Update the noise for few steps gradient decent.**
+      - **Is this noise picture becoming a purified x_adv ?**
+
+    - **Any generative model that include a generator can do such thing ?**
+
+      
+
+## **ADVERSARIAL EXAMPLES FOR GENERATIVE MODELS**
+
+  [Paper Here](https://arxiv.org/pdf/1702.06832.pdf)  
+
+****
+
+- **Classifier Attack**
+
+  - <div align="center">
+        <img src="https://github.com/CuiJiali-CV/attack-paper-note/raw/main/adversarial-on-generative/classifier.png" height="200" width="600" >
+    </div>
+
+  - ```python
+    Train Algorithm:
+    	weights of target generative model is fixed
+    	add a classifier on top of Encoder (getting latent as input)
+        Once Classifier is trained
+        
+        For n epoch:
+        	z_adv = Encoder(x+delta)
+            maximize loss of Cross-Entropy (y, Classifier(z_adv))
+            
+            detla should be under L* norm, i.e clip its value (-episilon, episilon)
+            Update delta by using SGD    
+            
+    ```
+
+  - Using Classifier to generate adversarial examples does not always result in high-quality reconstructions. This appears to be due to the fact that Classifier adds additional noise to the process. For example, Classifier sometimes confidently misclassifies latent vectors z that represent inputs that are far from the training data distribution, resulting in Decoder failing to reconstruct a plausible output from the adversarial example.
+
+- **L-VAE Attack**
+
+  - ```python
+    Algorithm:
+    	we have a x_s (the source) and x_t (the target)
+    	First, we compute the reconstruction of x_t, 
+    		x_t_rec = VAE(x_t)
+    		
+    	for n epoch:
+    		x_adv_rec = VAE(x_s+delta)
+    		minimize MSE (x_adv_rec, x_t_rec)
+    		
+    		detla should be under L* norm, i.e clip its value (-episilon, episilon)
+            Update delta by using SGD   
+        
+    		
+    ```
+
+- **LATENT ATTACK**
+
+  - ```
+    Algorithm:
+    	we have a x_s (the source) and x_t (the target)
+    	z_t = Encoder(x_t)
+    	for n epoch:
+    		z_adv = Encoder(x_s+delta)
+    		minimize distance between (z_t, z_adv), distance like L2 norm, euclidean distance.
+    		
+    		detla should be under L* norm, i.e clip its value (-episilon, episilon)
+            Update delta by using SGD   
+    ```
+
+    
 
 
-  
+
 
 
 ## Author
