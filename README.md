@@ -110,7 +110,7 @@
       <img src="https://github.com/CuiJiali-CV/attack-paper-note/raw/main/PuVAE/test.png" height="300" width="800" >
   </div>
 
-- ```
+- ```python
   Inference Algorithm:
   	x_hat, ys = PuVAE(x_adv,y)
   	y* = argmin(RMSE([x_hat,ys],[x_adv,y]))
