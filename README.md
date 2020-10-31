@@ -212,7 +212,7 @@
 
 - **LATENT ATTACK**
 
-  - ```
+  - ```python
     Algorithm:
     	we have a x_s (the source) and x_t (the target)
     	z_t = Encoder(x_t)
